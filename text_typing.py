@@ -22,7 +22,7 @@ class TextRunner:
             self.stdscr.addstr(20, 35, f"{self.text[:index]}", self.color.black_green)
             self.stdscr.addstr(21, 35 + index, f"{self.text[index:]}")
             self.stdscr.refresh()
-            while not next:
+            while not self.next:
                 t_input = self.stdscr.getkey()
                 if t_input == t:
                     self.next = True
@@ -32,9 +32,5 @@ class TextRunner:
                 elif t_input == "KEY_BACKSPACE":
                     self.stdscr.addstr(20, 35 + index, " ", self.color.black_green)
                     self.stdscr.refresh()
-                elif t_input == "\n":
-                    self.stdscr.clear()
-                    self.stdscr.refresh()
-                    exit()
                 else:
                     pass
