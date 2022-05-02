@@ -4,7 +4,7 @@ from settings import SettingsColors
 class TextRunner:
     def __init__(self, stdscr, text, mistakes: bool):
         self.end_typing = False
-        self.mistakes = mistakes = False
+        self.mistakes = mistakes
         self.mistakes_list = []
         self.taps = 0
         self.stdscr = stdscr

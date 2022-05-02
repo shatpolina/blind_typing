@@ -1,7 +1,11 @@
+from text_typing import TextRunner
+
+
 class StartMenu:
     def __init__(self, stdsrc, curses):
         self.stdscr = stdsrc
         self.curses = curses
+        self.text = "The quick brown fox jumps over the lazy dog."
 
     def main(self):
         self._logo()
@@ -24,7 +28,11 @@ class StartMenu:
             if key == "\n":
                 self.stdscr.clear()
                 self.stdscr.refresh()
-                break
+                # add func add text
+                TextRunner(self.stdscr, self.text, mistakes=True).main()
+                return
             if key == " ":
                 self.stdscr.clear()
                 self.stdscr.refresh()
+                TextRunner(self.stdscr, self.text, mistakes=False).main()
+                break
