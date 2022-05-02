@@ -5,7 +5,7 @@ class TextRunner:
     def __init__(self, stdscr, text, mistakes: bool):
         self.end_typing = False
         self.mistakes = mistakes
-        self.mistakes_list = []
+        self.mistakes_dict = {}
         self.taps = 0
         self.stdscr = stdscr
         self.text = text
@@ -31,9 +31,14 @@ class TextRunner:
             for index, t in enumerate(self.text):
                 self.stdscr.clear()
                 self.next = False
+
                 self.stdscr.addstr(20, 35, f"{self.text[:index]}", self.color.green_white)
+                if self.mistakes:
+                    for mistake_index, old_mistake in self.mistakes_dict.items():
+                        self.stdscr.addstr(20, 35 + mistake_index, f"{old_mistake}", self.color.red_white)
                 self.stdscr.addstr(21, 35 + index, f"{self.text[index:]}")
                 self.stdscr.refresh()
+                n = 0
                 while not self.next:
                     t_input = self.stdscr.getkey()
                     if t_input == "^[":
@@ -49,17 +54,14 @@ class TextRunner:
                     if t_input == "KEY_BACKSPACE":
                         self.stdscr.addstr(20, 35 + index, " ")
                         self.stdscr.refresh()
+                        pass
 
                     if t_input != t and t_input != "KEY_BACKSPACE":
+                        mistake = {index: t_input}
+                        self.mistakes_dict.update(mistake)
+                        self.stdscr.addstr(20, 35 + index, f"{t_input}", self.color.red_white)
+                        self.stdscr.refresh()
                         if self.mistakes:
-                            mistake = {index: t}
-                            self.mistakes_list.append(mistake)
-                            self.stdscr.addstr(20, 35 + index, f"{t_input}", self.color.red_white)
-                            self.stdscr.refresh()
-                        else:
-                            self.mistakes_list.append(index)
-                            self.stdscr.addstr(20, 35 + index, f"{t_input}", self.color.red_white)
-                            self.stdscr.refresh()
                             self.next = True
                     else:
                         self.stdscr.addstr(20, 35 + index, " ", self.color.red_black)
@@ -68,8 +70,8 @@ class TextRunner:
             self.end_typing = True
 
     def _get_statisctic(self):
-        n_valid = f"Количество попаданий: {self.taps - int(len(self.mistakes_list))}"
-        n_errors = f"Количество ошибок: {len(self.mistakes_list)}"
+        n_valid = f"Количество попаданий: {self.taps - int(len(self.mistakes_dict))}"
+        n_errors = f"Количество ошибок: {len(self.mistakes_dict)}"
         n_taps = f"Количество нажатий: {self.taps}"
         n_text_score = f"Напечатано текста: %"
 

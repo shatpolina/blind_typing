@@ -31,8 +31,8 @@ class StartMenu:
             self.stdscr.clear()
             self.stdscr.refresh()
             # TODO: add func add_text
-            TextRunner(self.stdscr, self.text, mistakes=True).main()
+            TextRunner(self.stdscr, self.text, mistakes=False).main()
         if key == " ":
             self.stdscr.clear()
             self.stdscr.refresh()
-            TextRunner(self.stdscr, self.text, mistakes=False).main()
+            TextRunner(self.stdscr, self.text, mistakes=True).main()
