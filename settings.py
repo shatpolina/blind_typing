@@ -1,6 +1,13 @@
 import curses
 
 
+class SettingsColors:
+    def __init__(self, stdsrc):
+        self.black_green = curses.color_pair(1)
+        self.black_red = curses.color_pair(2)
+        self.black_white = curses.color_pair(3)
+
+
 class Settings:
     def __init__(self, activated: bool, stdsrc):
         self.stdscr = stdsrc
