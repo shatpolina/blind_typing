@@ -12,16 +12,18 @@ class TextRunner:
         self.color = SettingsColors(stdscr)
 
     def main(self):
+        while not self.end_typing:
+            # TODO: add timer
+            self.stdscr.addstr(1, 1, "Press Crtl+C to stop")
+            self._text_runner()
+            self.stdscr.clear()
+
+        self._get_statisctic()
+
         while True:
-            if not self.end_typing:
-                self.stdscr.addstr(1, 1, "Press Crtl+C to stop")
-                mistakes = self._text_runner()
-                self.stdscr.clear()
-            if self.end_typing:
-                self.stdscr.addstr(20, 35, f"Количество ошибок: {len(self.mistakes_list)}", self.color.red_white)
-                self.stdscr.addstr(20, 57, f"Количество попаданий: {self.taps - int(len(self.mistakes_list))}", self.color.green_white)
-                self.stdscr.addstr(21, 80, f"Символов напечатано: {self.taps}")
-                self.stdscr.refresh()
+            input = self.stdscr.getkey()
+            if input == "\n" or input == "^[":  # only Enter worked
+                break
 
     def _text_runner(self):
         try:
@@ -34,15 +36,19 @@ class TextRunner:
                 self.stdscr.refresh()
                 while not self.next:
                     t_input = self.stdscr.getkey()
-                    if t_input:
-                        self.taps += 1
-
                     if t_input == "^[":
                         self.stdscr.addstr(20, 35 + index, " ")
                         self.stdscr.refresh()
 
+                    if t_input:
+                        self.taps += 1
+
                     if t_input == t:
                         self.next = True
+
+                    if t_input == "KEY_BACKSPACE":
+                        self.stdscr.addstr(20, 35 + index, " ")
+                        self.stdscr.refresh()
 
                     if t_input != t and t_input != "KEY_BACKSPACE":
                         if self.mistakes:
@@ -55,14 +61,20 @@ class TextRunner:
                             self.stdscr.addstr(20, 35 + index, f"{t_input}", self.color.red_white)
                             self.stdscr.refresh()
                             self.next = True
-
-                    if t_input == "KEY_BACKSPACE":
-                        self.stdscr.addstr(20, 35 + index, " ")
-                        self.stdscr.refresh()
-                    # не работает
                     else:
                         self.stdscr.addstr(20, 35 + index, " ", self.color.red_black)
                         self.stdscr.refresh()
         finally:
             self.end_typing = True
-            return self.mistakes_list
+
+    def _get_statisctic(self):
+        n_valid = f"Количество попаданий: {self.taps - int(len(self.mistakes_list))}"
+        n_errors = f"Количество ошибок: {len(self.mistakes_list)}"
+        n_taps = f"Количество нажатий: {self.taps}"
+        n_text_score = f"Напечатано текста: %"
+
+        self.stdscr.addstr(20, 25, n_valid, self.color.green_white)
+        self.stdscr.addstr(20, 25 + 1 + len(n_valid), n_errors, self.color.red_white)
+        self.stdscr.addstr(21, 25 + 2 + len(n_valid) + len(n_errors), n_taps)
+        self.stdscr.addstr(21, 25 + 3 + len(n_valid) + len(n_errors) + len(n_taps), n_text_score)
+        self.stdscr.refresh()

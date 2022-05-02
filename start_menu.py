@@ -15,10 +15,16 @@ class StartMenu:
         self.stdscr.addstr(6, 72, "trainer *~")
 
     def _start(self):
-        self.stdscr.addstr(20, 55, "Press Enter to start")
+        learning_text = "Press Enter to start learning"
+        training_text = "Press Backspace to start training"
+        self.stdscr.addstr(20, 55, learning_text)
+        self.stdscr.addstr(21, 55 + len(learning_text), training_text)
         while True:
             key = self.stdscr.getkey()
             if key == "\n":
                 self.stdscr.clear()
                 self.stdscr.refresh()
                 break
+            if key == " ":
+                self.stdscr.clear()
+                self.stdscr.refresh()
