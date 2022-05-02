@@ -11,7 +11,7 @@ def main(stdscr):
     StartMenu(stdscr, curses).main()
 
     text = "The quick brown fox jumps over the lazy dog."
-    TextRunner(stdscr, text).main()
+    TextRunner(stdscr, text, mistakes=False).main()
 
 
 wrapper(main)
