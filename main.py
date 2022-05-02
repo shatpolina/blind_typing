@@ -2,18 +2,8 @@ import curses
 import time
 from curses import wrapper
 
-
-def logo(stdscr):
-    stdscr.addstr(5, 55, "~* Blind typing", curses.color_pair(1))
-    stdscr.addstr(5, 69, "h", curses.color_pair(2))
-    stdscr.addstr(5, 70, "|", curses.A_BLINK)
-    stdscr.addstr(6, 69, "g")
-    stdscr.addstr(6, 72, "trainer *~")
-
-
-def start_menu(stdscr):
-    logo(stdscr)
-    stdscr.addstr(20, 55, "Press Enter to start")
+from settings import Settings
+from start_menu import StartMenu
 
 
 def text_runner(stdscr):
@@ -45,25 +35,13 @@ def text_runner(stdscr):
 
 
 def main(stdscr):
-    curses.use_default_colors()
-    curses.cbreak()
-    curses.noecho()
-    stdscr.keypad(True)
+    Settings(True, stdscr)
 
-    black_green = curses.init_pair(1, curses.COLOR_GREEN, curses.COLOR_WHITE)
-    black_red = curses.init_pair(2, curses.COLOR_RED, curses.COLOR_WHITE)
-    black_white = curses.init_pair(3, curses.COLOR_WHITE, curses.COLOR_BLACK)
+    black_green = curses.color_pair(1)
+    black_red = curses.color_pair(2)
+    black_white = curses.color_pair(3)
 
-    start_menu(stdscr)
-
-    while True:
-        key = stdscr.getkey()
-        print(key)
-        if key == "\n":
-            break
-
-    stdscr.clear()
-    stdscr.refresh()
+    StartMenu(stdscr, curses).main()
 
     while True:
         stdscr.clear()
