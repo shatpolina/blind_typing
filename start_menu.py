@@ -8,8 +8,10 @@ class StartMenu:
         self.text = "The quick brown fox jumps over the lazy dog."
 
     def main(self):
-        self._logo()
-        self._start()
+        while True:
+            self.stdscr.clear()
+            self._logo()
+            self._start()
 
     def _logo(self):
         self.stdscr.addstr(5, 55, "~* Blind typing", self.curses.color_pair(1))
@@ -23,16 +25,14 @@ class StartMenu:
         training_text = "Press Backspace to start training"
         self.stdscr.addstr(20, 55, learning_text)
         self.stdscr.addstr(21, 55 + len(learning_text), training_text)
-        while True:
-            key = self.stdscr.getkey()
-            if key == "\n":
-                self.stdscr.clear()
-                self.stdscr.refresh()
-                # add func add text
-                TextRunner(self.stdscr, self.text, mistakes=True).main()
-                return
-            if key == " ":
-                self.stdscr.clear()
-                self.stdscr.refresh()
-                TextRunner(self.stdscr, self.text, mistakes=False).main()
-                break
+        self.stdscr.refresh()
+        key = self.stdscr.getkey()
+        if key == "\n":
+            self.stdscr.clear()
+            self.stdscr.refresh()
+            # TODO: add func add_text
+            TextRunner(self.stdscr, self.text, mistakes=True).main()
+        if key == " ":
+            self.stdscr.clear()
+            self.stdscr.refresh()
+            TextRunner(self.stdscr, self.text, mistakes=False).main()
