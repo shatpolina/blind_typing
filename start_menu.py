@@ -30,9 +30,13 @@ class StartMenu:
         if key == "\n":
             self.stdscr.clear()
             self.stdscr.refresh()
-            # TODO: add func add_text
+            # TODO:
+            #  find another solution
+            #  \/\/\/
             TextRunner(self.stdscr, self.text, mistakes=False).main()
         if key == " ":
             self.stdscr.clear()
             self.stdscr.refresh()
+            # TODO:
+            #  \/\/\/
             TextRunner(self.stdscr, self.text, mistakes=True).main()
